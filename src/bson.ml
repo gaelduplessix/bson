@@ -76,12 +76,12 @@ let create_string v = String v;;
 let create_doc_element v = Document v;;
 let create_list l = Array l;;
 let create_doc_element_list l = create_list (List.map create_doc_element l);;
-let create_generic_binary v = Binary (Generic v);;
+(* let create_generic_binary v = Binary (Generic v);;
 let create_function_binary v = Binary (Function v);;
 let create_uuid_binary v = Binary (UUID v);;
-let create_md5_binary v = Binary (MD5 v);;
+let create_md5_binary v = Binary (MD5 v);; *)
 let create_user_binary v = Binary (UserDefined v);;
-let is_valid_objectId objectId = if String.length objectId = 12 || String.length objectId = 24 then true else false;;
+(* let is_valid_objectId objectId = if String.length objectId = 12 || String.length objectId = 24 then true else false;; *)
 let hex_to_string s =
   let n = String.length s in
   let buf = Buffer.create 12 in
@@ -106,7 +106,7 @@ let create_jscode v = JSCode v;;
 let create_jscode_w_s s doc = JSCodeWS (s, doc);;
 let create_int32 v = Int32 v;;
 let create_int64 v = Int64 v;;
-let create_timestamp v = Timestamp v;;
+(* let create_timestamp v = Timestamp v;; *)
 let create_minkey () = MinKey MINKEY;;
 let create_maxkey () = MaxKey MAXKEY;;
 
@@ -299,7 +299,7 @@ let decode_int32 str cur =
       decode (i-1) new_acc
   in (decode (cur+3) 0l, cur+4);;
 
-let rec next_x00 str cur = String.index_from str cur '\x00';;
+let next_x00 str cur = String.index_from str cur '\x00';;
 
 let decode_ename str cur =
   let x00 = next_x00 str cur in
@@ -330,7 +330,7 @@ let decode_string str cur =
 
 let doc_to_list doc = (* we need to transform a doc with key as incrementing from '0' to a list *)
   List.map (
-    fun (k,v) -> v
+    fun (_, v) -> v
   ) doc
 
 
@@ -391,7 +391,7 @@ let decode str =
 	| '\x0B' -> decode_regex str next_cur
 	| '\x0D' -> decode_jscode str next_cur
 	| '\x0F' -> (* decode jscode_w_s *)
-	  let (len, next_cur) = decode_len str next_cur in
+	  let (_len, next_cur) = decode_len str next_cur in
 	  let (s, next_cur) = decode_string str next_cur in
 	  let (doc, next_cur) = decode_doc str next_cur in
 	  (JSCodeWS (s, doc), next_cur)

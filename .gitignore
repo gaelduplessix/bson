@@ -19,3 +19,5 @@ tmp/
 setup.data
 setup.log
 _tags.*
+*.install
+.merlin

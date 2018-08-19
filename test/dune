@@ -1,0 +1,8 @@
+(executable
+ (name test_bson)
+ (public_name test_bson)
+ (libraries bson))
+
+(alias
+ (name runtest)
+ (action (run ./test_bson.exe)))
