@@ -119,7 +119,7 @@ let get_function_binary = function | Binary (Function v) -> v | _ -> raise Wrong
 let get_uuid_binary = function | Binary (UUID v) -> v | _ -> raise Wrong_bson_type;;
 let get_md5_binary = function | Binary (MD5 v) -> v | _ -> raise Wrong_bson_type;;
 let get_user_binary = function | Binary (UserDefined v) -> v | _ -> raise Wrong_bson_type;;
-let get_objectId = function | ObjectId v -> v | _ -> raise Wrong_bson_type;;
+let get_objectId = function | ObjectId v -> (Hex.show (Hex.of_string v)) | _ -> raise Wrong_bson_type;;
 let get_boolean = function | Boolean v -> v | _ -> raise Wrong_bson_type;;
 let get_utc = function | UTC v -> v | _ -> raise Wrong_bson_type;;
 let get_null = function | Null NULL -> NULL | _ -> raise Wrong_bson_type;;
@@ -439,7 +439,7 @@ let to_simple_json doc =
       begin match v with
 	| Generic v | Function v | UUID v | MD5 v | UserDefined v -> "\"" ^ v ^ "\""
       end
-    | ObjectId v -> "\"" ^ v ^ "\""
+    | ObjectId v -> "\"" ^ (Hex.show (Hex.of_string v)) ^ "\""
     | Boolean v -> if v then "\"true\"" else "\"false\""
     | UTC v -> Int64.to_string v
     | Null NULL-> "\"null\""

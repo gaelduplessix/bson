@@ -3,4 +3,5 @@
  (public_name bson)
  (wrapped false)
  (modules bson bson_ext)
+ (libraries hex)
  (flags (:standard -w -52)))

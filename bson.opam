@@ -13,6 +13,7 @@ build-test: [
 ]
 depends: [
   "dune" {build}
+  "hex"
 ]
 depopts: [
   "deriving"
